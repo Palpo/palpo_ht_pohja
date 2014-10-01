@@ -1,0 +1,25 @@
+
+div {
+	margin: 0;
+	padding: 0;
+}
+
+form.search {
+	padding: 12px;
+}
+
+form.search > input {
+	font-size: 133%;
+}
+
+.imagebox {
+	background-color: #F0F0FF;
+	float: left;
+	border: 1px solid lightgray;
+	margin: 8px;
+	padding: 4px;	
+}
+
+.keywordbox input[type="text"] {
+	width: 128px;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+  	<title>Kuvahaku</title>
+  	<link href="static/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    
+    <form class="search" action="/" method="GET">
+      <input type="text" name="q" value="{{search_keyword}}" placeholder="Hakusana" />
+      <input type="submit" value="Hae kuvia">
+    </form>
+    
+    {% if search_keyword %}
+      <div>Haulla <strong>{{search_keyword}}</strong> löytyi {{images|length}} kuvaa.</div>
+      <div>Hakuun liittyvät hakusanat:
+      	{% for rel in related_keywords %}
+          <a href="/?q={{rel}}">{{rel}}</a>
+        {% endfor %}
+      </div>
+	
+	  {% for img in images %}
+	    <div class="imagebox">
+	  	  <div class="deletebox">
+	  	    <form action="/delete/{{img.id}}" method="POST">
+	  	      <input type="hidden" name="search_keyword" value="{{search_keyword}}" />
+	  	      <input type="submit" value="Poista kuva" />
+	  	    </form>
+	  	  </div>
+	  	  
+	  	  <a href="{{ img.original_url|safe }}">
+	  	    <img src="{{ img.thumbnail_url|safe }}" alt="{{img}}" />	  	  
+	  	  </a>
+	  	  <div class="keywordbox">
+	  	    <form action="/update/{{img.id}}" method="POST">
+	  	      <input type="hidden" name="search_keyword" value="{{search_keyword}}" />
+	  	      {% for kw in img.keywords %}
+	            <input type="checkbox" name="keyword:{{kw}}" id="{{img.id}}-{{kw}}" checked="checked" />
+	  	        <label for="{{img.id}}-{{kw}}">{{kw}}</label>
+	            <br />
+	  	      {% endfor %}
+	  	      <input type="text" placeholder="Uusi avainsana" name="newkeyword" /><br />
+	  	      <input type="submit" value="Tallenna">
+	  	    </form>
+	  	  </div>
+	    </div>
+      {% endfor %}
+    {% endif %}
+
+  </body>
+</html>
+{% endautoescape %}
